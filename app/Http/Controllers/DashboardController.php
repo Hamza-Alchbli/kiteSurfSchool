@@ -15,10 +15,37 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $role = $user->role;
-        $roleName = GetRoleNameByNumber::getRoleName($role);
+        $roleName = strtolower(GetRoleNameByNumber::getRoleName($role));
 
-        return Inertia::render('Dashboard', [
+        if($roleName == strtolower(UserRoleEnum::ADMIN->name)){
+            return $this->adminDashboard($roleName);
+        }
+        else if($roleName == strtolower(UserRoleEnum::EMPLOYEE->name)){
+            return $this->employeeDashboard($roleName);
+        }
+        else{
+            return $this->userDashboard($roleName);
+        }
+
+
+    }
+
+    public function adminDashboard($roleName){
+        return Inertia::render('DashboardAdmin', [
             'message' => $roleName,
         ]);
     }
+
+    public function userDashboard($roleName){
+        return Inertia::render('DashboardCustomer', [
+            'message' => $roleName,
+        ]);
+    }
+
+    public function employeeDashboard($roleName){
+        return Inertia::render('DashboardEmployee', [
+            'message' => $roleName,
+        ]);
+    }
+
 }

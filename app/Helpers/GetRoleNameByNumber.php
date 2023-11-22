@@ -10,11 +10,11 @@ class GetRoleNameByNumber
     {
         switch ($roleNumber) {
             case UserRoleEnum::CUSTOMER->value:
-                return 'Customer';
+                return 'CUSTOMER';
             case UserRoleEnum::EMPLOYEE->value:
-                return 'Employee';
+                return 'EMPLOYEE';
             case UserRoleEnum::ADMIN->value:
-                return 'Admin';
+                return 'ADMIN';
             default:
                 return 'Unknown Role';
         }

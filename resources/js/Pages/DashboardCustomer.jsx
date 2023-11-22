@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth, message }) {
+export default function DashboardAdmin({ auth, message }) {
     // get the user role from the route
     console.log(message);
     return (
@@ -13,9 +13,7 @@ export default function Dashboard({ auth, message }) {
 
             <div className="py-12 ">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-4">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg ">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in!</div>
-                    </div>
+
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
                         <div className="p-6 text-gray-900 dark:text-gray-100">You are a {message}</div>
                     </div>
