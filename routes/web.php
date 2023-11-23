@@ -4,8 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\AdminUser;
+
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +34,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 // Route to users page and check if user is logged in, verified and has admin role
 Route::middleware(['auth', 'verified', AdminUser::class])->group(function () {
-    Route::get('/users', [DashboardController::class, 'users'])->name('users');
+    Route::get('/users', [UserController::class, 'users'])->name('users');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::patch('/users/{id}', [UserController::class, 'suspend'])->name('users.suspend');
+
 });
 
 Route::middleware('auth')->group(function () {

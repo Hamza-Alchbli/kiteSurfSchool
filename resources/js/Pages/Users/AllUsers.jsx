@@ -3,7 +3,8 @@ import { Head } from "@inertiajs/react";
 import DangerButton from "@/Components/DangerButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DeleteSelectedUserForm from "./Partials/DeleteSelectedUserForm";
-export default function AllUsers({ auth, message, users }) {
+import SuspendSelectedUserForm from "./Partials/SuspendSelectedUser";
+export default function AllUsers({ auth, users }) {
     // get the user role from the route
     console.log(users);
     return (
@@ -11,19 +12,14 @@ export default function AllUsers({ auth, message, users }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Dashboard
+                    Users
                 </h2>
             }
         >
-            <Head title="Dashboard" />
+            <Head title="Users" />
 
             <div className="py-12 ">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-4">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            This is users page
-                        </div>
-                    </div>
                     {/* map throigh the users and show thme */}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
                         <div className="overflow-x-auto">
@@ -71,15 +67,21 @@ export default function AllUsers({ auth, message, users }) {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 {user.role}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap flex gap-4">
+                                            <td className="px-6 py-4 whitespace-nowrap flex gap-2 ">
                                                 <SecondaryButton>
                                                     Edit
                                                 </SecondaryButton>
-
-                                                <DangerButton>
-                                                    Suspend
-                                                </DangerButton>
-                                                <DeleteSelectedUserForm />
+                                                <div className="flex justify-between gap-6">
+                                                    <SuspendSelectedUserForm
+                                                        userId={user.id}
+                                                        isSuspended={
+                                                            user.suspended
+                                                        }
+                                                    />
+                                                    <DeleteSelectedUserForm
+                                                        userId={user.id}
+                                                    />
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

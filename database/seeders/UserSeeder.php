@@ -17,12 +17,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // DB::table('categories')->insert([
-        //     'category_id' => Uuid::uuid4()->toString(),
-        //     'name' => Str::random(10),
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        // Create a user with the admin role
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'email_verified_at' => now(),
+            'role' => 5,
+            'password' => bcrypt('12345678'),
+            'remember_token' => Str::random(10),
+        ]);
+
         User::factory()
             ->count(10)
             ->create();

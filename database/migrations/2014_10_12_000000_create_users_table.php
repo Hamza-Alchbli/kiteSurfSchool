@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             // user role enum column. 5 = admin, 3 = employee, 1 = customer
-            $table->enum('role', [UserRoleEnum::ADMIN, UserRoleEnum::EMPLOYEE, UserRoleEnum::CUSTOMER])->default(UserRoleEnum::CUSTOMER)->default(UserRoleEnum::CUSTOMER);
+            $table->string('role')->default(UserRoleEnum::CUSTOMER);
+            $table->boolean('suspended')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

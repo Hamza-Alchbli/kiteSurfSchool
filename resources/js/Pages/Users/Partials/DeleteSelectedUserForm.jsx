@@ -7,9 +7,8 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 
-export default function DeleteSelectedUserForm({ className = '' }) {
+export default function DeleteSelectedUserForm({ className = '', userId }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const passwordInput = useRef();
     const {
         data,
         setData,
@@ -26,10 +25,15 @@ export default function DeleteSelectedUserForm({ className = '' }) {
     const deleteUser = (e) => {
         e.preventDefault();
 
-        destroy(route('profile.destroy'), {
+        // destroy(route('users.destroy'), {
+        //     preserveScroll: true,
+        //     onSuccess: () => closeModal(),
+        //     onFinish: () => reset(),
+        // });
+
+        destroy(route('users.destroy', userId), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
-            onError: () => passwordInput.current.focus(),
             onFinish: () => reset(),
         });
     };
@@ -43,7 +47,7 @@ export default function DeleteSelectedUserForm({ className = '' }) {
     return (
         <section className={`space-y-6 ${className}`}>
 
-            <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
+            <DangerButton onClick={confirmUserDeletion}>Delete</DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
