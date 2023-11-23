@@ -6,7 +6,6 @@ import DeleteSelectedUserForm from "./Partials/DeleteSelectedUserForm";
 import SuspendSelectedUserForm from "./Partials/SuspendSelectedUser";
 export default function AllUsers({ auth, users }) {
     // get the user role from the route
-    console.log(users);
     return (
         <AdminAuthenticatedLayout
             user={auth.user}

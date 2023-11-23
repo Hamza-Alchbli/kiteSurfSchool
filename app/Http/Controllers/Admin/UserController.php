@@ -14,6 +14,12 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function users(){
+        $user = Auth::user();
+        $roleName = GetRoleNameByNumber::getRoleName($user->role);
+        if($roleName != UserRoleEnum::ADMIN->name){
+            return Redirect::to('/dashboard');
+        }
+
         // geta ll users
         $users = User::all();
         return Inertia::render('Users/AllUsers', [
@@ -23,6 +29,12 @@ class UserController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+        $roleName = GetRoleNameByNumber::getRoleName($user->role);
+        if($roleName != UserRoleEnum::ADMIN->name){
+            return Redirect::to('/dashboard');
+        }
+
         $user = User::find($request->id);
         $user->delete();
 
@@ -31,6 +43,12 @@ class UserController extends Controller
 
     public function suspend(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+        $roleName = GetRoleNameByNumber::getRoleName($user->role);
+        if($roleName != UserRoleEnum::ADMIN->name){
+            return Redirect::to('/dashboard');
+        }
+
         $user = User::find($request->id);
         // $user->suspend = 1;
 
