@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Enum\UserRoleEnum;
 use App\Helpers\GetRoleNameByNumber;
+use App\Models\User;
 class DashboardController extends Controller
 {
 
@@ -45,6 +46,14 @@ class DashboardController extends Controller
     public function employeeDashboard($roleName){
         return Inertia::render('DashboardEmployee', [
             'message' => $roleName,
+        ]);
+    }
+
+    public function users(){
+        // geta ll users
+        $users = User::all();
+        return Inertia::render('Users/AllUsers', [
+            'users' => $users,
         ]);
     }
 
