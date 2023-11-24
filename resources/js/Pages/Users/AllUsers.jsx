@@ -4,6 +4,7 @@ import DangerButton from "@/Components/DangerButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DeleteSelectedUserForm from "./Partials/DeleteSelectedUserForm";
 import SuspendSelectedUserForm from "./Partials/SuspendSelectedUser";
+import EditSelectedUserForm from "./Partials/EditSelectedUserForm";
 export default function AllUsers({ auth, users }) {
     // get the user role from the route
     return (
@@ -67,9 +68,9 @@ export default function AllUsers({ auth, users }) {
                                                 {user.role}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap flex gap-2 ">
-                                                <SecondaryButton>
-                                                    Edit
-                                                </SecondaryButton>
+                                                <EditSelectedUserForm
+                                                    user={user}
+                                                />
                                                 <div className="flex justify-between gap-6">
                                                     <SuspendSelectedUserForm
                                                         userId={user.id}

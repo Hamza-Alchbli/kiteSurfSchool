@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,15 +14,20 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function users(){
+    public function users()
+    {
         $user = Auth::user();
         $roleName = GetRoleNameByNumber::getRoleName($user->role);
-        if($roleName != UserRoleEnum::ADMIN->name){
+        if ($roleName != UserRoleEnum::ADMIN->name) {
             return Redirect::to('/dashboard');
         }
 
         // geta ll users
         $users = User::all();
+        // replace role number with role name
+        foreach ($users as $user) {
+            $user->role = strtolower(GetRoleNameByNumber::getRoleName($user->role));
+        }
         return Inertia::render('Users/AllUsers', [
             'users' => $users,
         ]);
@@ -31,7 +37,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $roleName = GetRoleNameByNumber::getRoleName($user->role);
-        if($roleName != UserRoleEnum::ADMIN->name){
+        if ($roleName != UserRoleEnum::ADMIN->name) {
             return Redirect::to('/dashboard');
         }
 
@@ -45,21 +51,43 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $roleName = GetRoleNameByNumber::getRoleName($user->role);
-        if($roleName != UserRoleEnum::ADMIN->name){
+        if ($roleName != UserRoleEnum::ADMIN->name) {
             return Redirect::to('/dashboard');
         }
 
         $user = User::find($request->id);
         // $user->suspend = 1;
 
-        if($user->suspended == 1){
-            $user->suspended = 0;
-        }else{
-            $user->suspended = 1;
-        }
+        $user->suspended = !$user->suspended;
+
         $user->save();
 
         return Redirect::to('/users');
     }
+
+    public function update(Request $request): RedirectResponse
+    {
+        $currentUser = Auth::user();
+        $roleName = GetRoleNameByNumber::getRoleName($currentUser->role);
+        if ($roleName != UserRoleEnum::ADMIN->name) {
+            return Redirect::to('/dashboard');
+        }
+
+        $user = User::find($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->adress = $request->adress;
+        $user->phone = $request->phone;
+        $user->city = $request->city;
+        $user->zip = $request->zip;
+        $user->country = $request->country;
+        $user->citizen_service_number = $request->citizen_service_number;
+        $user->role = $request->role;
+
+        $user->save();
+
+        return back();
+    }
+
 
 }

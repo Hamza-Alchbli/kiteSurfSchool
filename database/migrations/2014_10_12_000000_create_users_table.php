@@ -16,7 +16,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            // user role enum column. 5 = admin, 3 = employee, 1 = customer
+            $table->string('adress')->nullable();
+            $table->string('city')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('country')->nullable();
+            $table->integer('citizen_service_number')->nullable()->max(9)->min(9);
             $table->string('role')->default(UserRoleEnum::CUSTOMER);
             $table->boolean('suspended')->default(false);
             $table->timestamp('email_verified_at')->nullable();
