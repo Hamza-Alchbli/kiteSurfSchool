@@ -76,7 +76,7 @@ class UserController extends Controller
         $user = User::find($request->id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->adress = $request->adress;
+        $user->streat = $request->streat;
         $user->phone = $request->phone;
         $user->city = $request->city;
         $user->zip = $request->zip;

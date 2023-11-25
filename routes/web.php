@@ -36,9 +36,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::middleware(['auth', 'verified', AdminUser::class])->group(function () {
     Route::get('/users', [UserController::class, 'users'])->name('users');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-    Route::patch('/users/{id}', [UserController::class, 'suspend'])->name('users.suspend');
-    Route::patch('/users/{id}', [UserController::class, 'update'])->name('users.update');
-
+    Route::patch('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
+    Route::patch('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
 });
 
 Route::middleware('auth')->group(function () {

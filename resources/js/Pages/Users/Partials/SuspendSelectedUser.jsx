@@ -30,31 +30,27 @@ export default function SuspendSelectedUserForm({
 
     const closeModal = () => {
         setConfirmingUserSuspension(false);
-
         reset();
     };
 
     return (
         <section className={`space-y-6 ${className}`}>
-            {/* <DangerButton onClick={confirmUserSuspension}>Suspend</DangerButton> */}
             {isSuspended ? (
-                <PrimaryButton className="ms-3" onClick={confirmUserSuspension}>
-                    Unsuspend
-                </PrimaryButton>
+                <p onClick={confirmUserSuspension} className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">Unuspend</p>
+
             ) : (
-                <DangerButton className="ms-3" onClick={confirmUserSuspension}>
-                    Suspend
-                </DangerButton>
+
+                <p onClick={confirmUserSuspension} className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">Suspend</p>
+
             )}
             <Modal show={confirmingUserSuspension} onClose={closeModal}>
                 <form onSubmit={suspendUser} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Are you sure you want to delete this account?
+                        Are you sure you want to suspend this account?
                     </h2>
 
                     <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Once this account is deleted, all of its resources and
-                        data will be permanently deleted.
+                     Once you suspend this account, all of its resources and data will be stopped.
                     </p>
 
                     <div className="mt-6 flex justify-end">
@@ -76,7 +72,6 @@ export default function SuspendSelectedUserForm({
                                 Suspend
                             </DangerButton>
                         )}
-
                     </div>
                 </form>
             </Modal>

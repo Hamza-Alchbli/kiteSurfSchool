@@ -22,7 +22,7 @@ export default function EditSelectedUserForm({ className = "", user }) {
     } = useForm({
         name: user.name,
         email: user.email,
-        adress: user.adress,
+        streat: user.streat,
         phone: user.phone,
         city: user.city,
         zip: user.zip,
@@ -94,14 +94,14 @@ export default function EditSelectedUserForm({ className = "", user }) {
                         <InputError className="mt-2" message={errors.email} />
                     </div>
                     <div>
-                        <InputLabel htmlFor="adress" value="adress" />
+                        <InputLabel htmlFor="streat" value="streat" />
 
                         <TextInput
-                            id="adress"
+                            id="streat"
                             type="text"
                             className="mt-1 block w-full"
-                            value={data.adress || ""}
-                            onChange={(e) => setData("adress", e.target.value)}
+                            value={data.streat || ""}
+                            onChange={(e) => setData("streat", e.target.value)}
                             autoComplete="username"
                         />
 

@@ -15,7 +15,6 @@ export default function AllUsers({ auth, users }) {
     const [roleFilter, setRoleFilter] = useState("all");
     const [searchText, setSearchText] = useState("");
     const [suspended, setSuspended] = useState(false);
-
     const filteredUsers = users.filter((user) => {
         // Filter by role
         if (roleFilter !== "all" && user.role !== roleFilter) {
@@ -25,11 +24,13 @@ export default function AllUsers({ auth, users }) {
         // Filter by search text (you can customize this based on your criteria)
         const searchRegex = new RegExp(searchText, "");
         return (
-            searchRegex.test(user.name) ||
-            searchRegex.test(user.email) ||
-            // Add other fields to search if needed
-            searchRegex.test(user.role)
-
+            (searchRegex.test(user.name) ||
+                searchRegex.test(user.email) ||
+                // Add other fields to search if needed
+                searchRegex.test(user.role)) &&
+            // check if the user is suspended
+            // if suspended is true then return only suspended users
+            (suspended ? user.suspended : true)
         );
     });
     return (
@@ -47,21 +48,21 @@ export default function AllUsers({ auth, users }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-4">
                     {/* map throigh the users and show thme */}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
-                        <div className="overflow-x-auto min-h-screen">
+                        <div className="overflow-x-auto min-h-screen-50">
                             {/* search input */}
                             {/* Filter and Search Controls */}
-                            <div className="flex space-x-4 mb-4 p-4" >
+                            <div className="flex space-x-4 mb-4 p-4">
                                 {/* Role Filter Buttons */}
                                 <div>
-                                <input
-                                    className="border border-gray-300 dark:border-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm"
-                                    type="text"
-                                    placeholder="Search..."
-                                    value={searchText}
-                                    onChange={(e) =>
-                                        setSearchText(e.target.value)
-                                    }
-                                />
+                                    <input
+                                        className="border border-gray-300 dark:border-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm min-w-max"
+                                        type="text"
+                                        placeholder="Search..."
+                                        value={searchText}
+                                        onChange={(e) =>
+                                            setSearchText(e.target.value)
+                                        }
+                                    />
                                 </div>
                                 <SecondaryButton
                                     onClick={() => setRoleFilter("all")}
@@ -72,7 +73,7 @@ export default function AllUsers({ auth, users }) {
                                 <SecondaryButton
                                     onClick={() => setSuspended(!suspended)}
                                     active={suspended}
-                                    >
+                                >
                                     Suspended
                                 </SecondaryButton>
                                 <SecondaryButton
@@ -89,21 +90,18 @@ export default function AllUsers({ auth, users }) {
                                 <SecondaryButton
                                     onClick={() => setRoleFilter("employee")}
                                     active={roleFilter === "employee"}
-                                    >
+                                >
                                     Employee
                                 </SecondaryButton>
                                 <SecondaryButton
                                     onClick={() => setRoleFilter("customer")}
                                     active={roleFilter === "customer"}
-                                    >
+                                >
                                     Customer
                                 </SecondaryButton>
                                 {/* button to show only suspended + role */}
 
-
-
                                 {/* Search Input */}
-
                             </div>
                             <table className="min-w-full divide-y divide-gray-200 min-h-300">
                                 <thead className="bg-gray-50 dark:bg-gray-700">
@@ -119,6 +117,12 @@ export default function AllUsers({ auth, users }) {
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
                                             Email
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                                        >
+                                            streat
                                         </th>
                                         <th
                                             scope="col"
@@ -145,6 +149,9 @@ export default function AllUsers({ auth, users }) {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 {user.email}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                {user.streat}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 {user.role}
