@@ -49,7 +49,7 @@ export default function UpdateProfileInformation({
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
-                        value={data.name}
+                        value={data.name || ""}
                         onChange={(e) => setData("name", e.target.value)}
                         required
                         isFocused
@@ -66,7 +66,7 @@ export default function UpdateProfileInformation({
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
-                        value={data.email}
+                        value={data.email || ""}
                         onChange={(e) => setData("email", e.target.value)}
                         required
                         autoComplete="username"
@@ -81,7 +81,7 @@ export default function UpdateProfileInformation({
                         id="adress"
                         type="text"
                         className="mt-1 block w-full"
-                        value={data.adress}
+                        value={data.adress || ""}
                         onChange={(e) => setData("adress", e.target.value)}
                         autoComplete="username"
                     />
@@ -94,7 +94,7 @@ export default function UpdateProfileInformation({
                         id="phone"
                         type="tel"
                         className="mt-1 block w-full"
-                        value={data.phone}
+                        value={data.phone || ""}
                         onChange={(e) => setData("phone", e.target.value)}
                         autoComplete="phone"
                     />
@@ -106,7 +106,7 @@ export default function UpdateProfileInformation({
                         id="city"
                         type="text"
                         className="mt-1 block w-full"
-                        value={data.city}
+                        value={data.city || ""}
                         onChange={(e) => setData("city", e.target.value)}
                         autoComplete="city"
                     />
@@ -118,7 +118,7 @@ export default function UpdateProfileInformation({
                         id="zip"
                         type="text"
                         className="mt-1 block w-full"
-                        value={data.zip}
+                        value={data.zip || ""}
                         onChange={(e) => setData("zip", e.target.value)}
                         autoComplete="zip"
                     />
@@ -145,7 +145,7 @@ export default function UpdateProfileInformation({
                         id="citizen_service_number"
                         type="text"
                         className="mt-1 block w-full"
-                        value={data.citizen_service_number}
+                        value={data.citizen_service_number || ""}
                         onChange={(e) =>
                             setData("citizen_service_number", e.target.value)
                         }

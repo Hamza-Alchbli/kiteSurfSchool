@@ -3,7 +3,6 @@ import { Head } from '@inertiajs/react';
 
 export default function DashboardAdmin({ auth, message }) {
     // get the user role from the route
-    console.log(message);
     return (
         <AdminAuthenticatedLayout
             user={auth.user}

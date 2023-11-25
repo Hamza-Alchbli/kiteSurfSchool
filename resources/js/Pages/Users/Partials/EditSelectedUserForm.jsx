@@ -6,27 +6,30 @@ import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import Select from "@/Components/Select";
 
-export default function EditSelectedUserForm({
-    className = "",
-    user,
-}) {
-    const [confirmingUserEdit, setconfirmingUserEdit] =
-        useState(false);
-    const { data, setData, patch, errors, processing, recentlySuccessful,reset } =
-        useForm({
-            name: user.name,
-            email: user.email,
-            adress: user.adress,
-            phone: user.phone,
-            city: user.city,
-            zip: user.zip,
-            country: user.country,
-            citizen_service_number: user.citizen_service_number,
-            role: user.role,
-        });
+export default function EditSelectedUserForm({ className = "", user }) {
+    const [confirmingUserEdit, setconfirmingUserEdit] = useState(false);
+    const {
+        data,
+        setData,
+        patch,
+        errors,
+        processing,
+        recentlySuccessful,
+        reset,
+    } = useForm({
+        name: user.name,
+        email: user.email,
+        adress: user.adress,
+        phone: user.phone,
+        city: user.city,
+        zip: user.zip,
+        country: user.country,
+        citizen_service_number: user.citizen_service_number,
+        role: user.role,
+    });
 
     const confirmUserSuspension = () => {
         setconfirmingUserEdit(true);
@@ -46,14 +49,16 @@ export default function EditSelectedUserForm({
     const resetForm = () => {
         setconfirmingUserEdit(false);
         reset();
-    }
+    };
 
     return (
         <section className={`space-y-6 ${className}`}>
-            {/* <DangerButton onClick={confirmUserSuspension}>Suspend</DangerButton> */}
-            <PrimaryButton className="ms-3" onClick={confirmUserSuspension}>
-                Edit
-            </PrimaryButton>
+            <p
+                onClick={confirmUserSuspension}
+                className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+            >
+                All info || Edit
+            </p>
 
             <Modal show={confirmingUserEdit} onClose={resetForm}>
                 <form onSubmit={updateUser} className="p-6">
@@ -95,7 +100,7 @@ export default function EditSelectedUserForm({
                             id="adress"
                             type="text"
                             className="mt-1 block w-full"
-                            value={data.adress || ''}
+                            value={data.adress || ""}
                             onChange={(e) => setData("adress", e.target.value)}
                             autoComplete="username"
                         />
@@ -108,7 +113,7 @@ export default function EditSelectedUserForm({
                             id="phone"
                             type="tel"
                             className="mt-1 block w-full"
-                            value={data.phone || ''}
+                            value={data.phone || ""}
                             onChange={(e) => setData("phone", e.target.value)}
                             autoComplete="phone"
                         />
@@ -120,7 +125,7 @@ export default function EditSelectedUserForm({
                             id="city"
                             type="text"
                             className="mt-1 block w-full"
-                            value={data.city || ''}
+                            value={data.city || ""}
                             onChange={(e) => setData("city", e.target.value)}
                             autoComplete="city"
                         />
@@ -132,7 +137,7 @@ export default function EditSelectedUserForm({
                             id="zip"
                             type="text"
                             className="mt-1 block w-full"
-                            value={data.zip || ''}
+                            value={data.zip || ""}
                             onChange={(e) => setData("zip", e.target.value)}
                             autoComplete="zip"
                         />
@@ -144,7 +149,7 @@ export default function EditSelectedUserForm({
                             id="country"
                             type="text"
                             className="mt-1 block w-full"
-                            value={data.country || ''}
+                            value={data.country || ""}
                             onChange={(e) => setData("country", e.target.value)}
                             autoComplete="country"
                         />
@@ -159,7 +164,7 @@ export default function EditSelectedUserForm({
                             id="citizen_service_number"
                             type="text"
                             className="mt-1 block w-full"
-                            value={data.citizen_service_number || ''}
+                            value={data.citizen_service_number || ""}
                             onChange={(e) =>
                                 setData(
                                     "citizen_service_number",
@@ -180,17 +185,17 @@ export default function EditSelectedUserForm({
                             id="role"
                             className="mt-1 block w-full "
                             defaultValue={
-                                data.role == "customer" ? 1 : data.role == "employee" ? 3 : 5
-
-
-
+                                data.role == "customer"
+                                    ? 1
+                                    : data.role == "employee"
+                                    ? 3
+                                    : 5
                             }
-
                             onChange={(e) => setData("role", e.target.value)}
                         >
-                            <option value="1" >Customer</option>
-                            <option value="3" >Employee</option>
-                            <option value="5" >Admin</option>
+                            <option value="1">Customer</option>
+                            <option value="3">Employee</option>
+                            <option value="5">Admin</option>
                         </Select>
                         <InputError className="mt-2" message={errors.role} />
                     </div>

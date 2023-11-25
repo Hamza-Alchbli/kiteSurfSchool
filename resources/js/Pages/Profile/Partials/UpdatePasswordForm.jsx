@@ -53,7 +53,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     <TextInput
                         id="current_password"
                         ref={currentPasswordInput}
-                        value={data.current_password}
+                        value={data.current_password || ''}
                         onChange={(e) => setData('current_password', e.target.value)}
                         type="password"
                         className="mt-1 block w-full"
@@ -69,7 +69,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     <TextInput
                         id="password"
                         ref={passwordInput}
-                        value={data.password}
+                        value={data.password || ''}
                         onChange={(e) => setData('password', e.target.value)}
                         type="password"
                         className="mt-1 block w-full"
@@ -84,7 +84,7 @@ export default function UpdatePasswordForm({ className = '' }) {
 
                     <TextInput
                         id="password_confirmation"
-                        value={data.password_confirmation}
+                        value={data.password_confirmation || ''}
                         onChange={(e) => setData('password_confirmation', e.target.value)}
                         type="password"
                         className="mt-1 block w-full"

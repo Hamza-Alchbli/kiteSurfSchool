@@ -24,13 +24,6 @@ export default function DeleteSelectedUserForm({ className = '', userId }) {
 
     const deleteUser = (e) => {
         e.preventDefault();
-
-        // destroy(route('users.destroy'), {
-        //     preserveScroll: true,
-        //     onSuccess: () => closeModal(),
-        //     onFinish: () => reset(),
-        // });
-
         destroy(route('users.destroy', userId), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
@@ -47,7 +40,7 @@ export default function DeleteSelectedUserForm({ className = '', userId }) {
     return (
         <section className={`space-y-6 ${className}`}>
 
-            <DangerButton onClick={confirmUserDeletion}>Delete</DangerButton>
+            <p onClick={confirmUserDeletion} className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">Delete</p>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
