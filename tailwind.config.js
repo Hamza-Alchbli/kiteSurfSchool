@@ -15,6 +15,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            minHeight: {
+                'screen-50': '50vh',
+            },
+
         },
     },
 
