@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'role' => fake()->randomElement([ UserRoleEnum::CUSTOMER, UserRoleEnum::EMPLOYEE]),
+            'role' => fake()->randomElement([ UserRoleEnum::CUSTOMER]),
             // random streat name max 10 characters
             'streat' => fake()->streetName(),
             'phone' => fake()->phoneNumber(),
