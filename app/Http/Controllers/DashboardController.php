@@ -44,8 +44,11 @@ class DashboardController extends Controller
     }
 
     public function employeeDashboard($roleName){
+        $user = Auth::user();
+        $reservations = $user->reservations->load('package');
         return Inertia::render('DashboardEmployee', [
-            'message' => $roleName,
+            'user' => $user,
+            'reservations' => $reservations,
         ]);
     }
 
