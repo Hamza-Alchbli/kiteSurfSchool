@@ -11,6 +11,9 @@ class Reservation extends Model
 
     function package(){
         return $this->belongsTo(Package::class, 'package_id');
+    }
 
+    function payment() {
+        return $this->hasOne(Payment::class, 'reservation_id');
     }
 }

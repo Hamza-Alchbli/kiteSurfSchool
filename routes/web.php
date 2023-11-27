@@ -5,9 +5,12 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\AdminUser;
+use App\Http\Middleware\AdminEmployee;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\controllers\ReservationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +41,10 @@ Route::middleware(['auth', 'verified', AdminUser::class])->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::patch('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
     Route::patch('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
+});
+
+Route::middleware(['auth', 'verified', AdminEmployee::class])->group(function(){
+    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
 });
 
 Route::middleware('auth')->group(function () {
