@@ -6,6 +6,8 @@ import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
+import Select from '@/Components/Select';
+
 
 export default function DeleteSelectedPaymentForm({ className = '', paymentId }) {
     const [confirmingPaymentDeletion, setConfirmingPaymentDeletion] = useState(false);
@@ -16,7 +18,9 @@ export default function DeleteSelectedPaymentForm({ className = '', paymentId })
         processing,
         reset,
         errors,
-    } = useForm();
+    } = useForm({
+        reason: "",
+    });
 
     const confirmPaymentDeletion = () => {
         setConfirmingPaymentDeletion(true);
@@ -51,6 +55,20 @@ export default function DeleteSelectedPaymentForm({ className = '', paymentId })
                     <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         Once this payment is deleted, an email will be sent to the user.
                     </p>
+
+                    <div>
+                        <InputLabel htmlFor="reason" value="Reason" />
+                        <Select
+                            id="reason"
+                            className="mt-1 block w-full "
+                            defaultValue={"sick"}
+                            onChange={(e) =>{ setData("reason", e.target.value); }}
+                        >
+                            <option value="sick">Sickness</option>
+                            <option value="weather">Bad wather</option>
+                        </Select>
+                        <InputError className="mt-2" message={errors.reason} />
+                    </div>
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
