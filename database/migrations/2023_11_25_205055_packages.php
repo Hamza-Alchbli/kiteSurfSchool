@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->integer('duration'); // Duration in minutes or hours, adjust as needed
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

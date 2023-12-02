@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enum\PaymentEnum;
 
 return new class extends Migration
 {
@@ -16,8 +17,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('reservation_id')->constrained();
             $table->decimal('amount', 8, 2);
-            $table->enum('payment_status', ['pending', 'completed'])->default('pending');
+            $table->tinyInteger('payment_status')->default(PaymentEnum::PENDING);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
