@@ -42,13 +42,13 @@ class DashboardController extends Controller
         });
 
         // dd($reservations);
-        $instructeurs = User::where('role', UserRoleEnum::EMPLOYEE->value)->get();
+        $instructors = User::where('role', UserRoleEnum::EMPLOYEE->value)->get();
 
         return Inertia::render('DashboardAdmin', [
             'message' => $roleName,
             'paidReservations' => $paidReservations,
             'reservations' => $reservations,
-            'instructeurs' => $instructeurs,
+            'instructors' => $instructors,
         ]);
     }
 
@@ -68,14 +68,6 @@ class DashboardController extends Controller
             'message' => $roleName,
             'user' => $user,
             'reservations' => $reservations,
-        ]);
-    }
-
-    public function users(){
-        // geta ll users
-        $users = User::all();
-        return Inertia::render('Users/AllUsers', [
-            'users' => $users,
         ]);
     }
 

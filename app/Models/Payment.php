@@ -11,4 +11,12 @@ class Payment extends Model
     use HasFactory;
     use SoftDeletes;
 
+    function reservation() {
+        return $this->belongsTo(Reservation::class);
+    }
+
+    function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

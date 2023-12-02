@@ -23,7 +23,7 @@ export default function DashboardAdmin({
     auth,
     message,
     paidReservations,
-    instructeurs,
+    instructors,
 }) {
     const [myEventsList, setMyEventsList] = useState([]);
     const [instructeur, setInstructeur] = useState("all");
@@ -66,7 +66,7 @@ export default function DashboardAdmin({
         } else {
             setMyEventsList([]);
             paidReservations.map((reservation) => {
-                if (reservation.instructer_id == instructeur) {
+                if (reservation.instructor_id == instructeur) {
                     setMyEventsList((myEventsList) => [
                         ...myEventsList,
                         {
@@ -119,9 +119,9 @@ export default function DashboardAdmin({
                                 }}
                                 className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                             >
-                                <option value="all">All Instructeurs</option>
-                                {instructeurs.length > 0 ? (
-                                    instructeurs.map((instructeur) => (
+                                <option value="all">All instructors</option>
+                                {instructors.length > 0 ? (
+                                    instructors.map((instructeur) => (
                                         <option
                                             key={instructeur.id}
                                             value={instructeur.id}
@@ -131,7 +131,7 @@ export default function DashboardAdmin({
                                     ))
                                 ) : (
                                     <option value="all">
-                                        All Instructeurs
+                                        All instructors
                                     </option>
                                 )}
                             </select>

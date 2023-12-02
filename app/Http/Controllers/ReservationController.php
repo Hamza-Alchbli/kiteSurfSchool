@@ -28,7 +28,7 @@ class ReservationController extends Controller
         $reservation = Reservation::find($id);
         $userId = $reservation->user_id;
 
-        $instructeurId = $reservation->instructer_id;
+        $instructeurId = $reservation->instructor_id;
         $instructeur = User::find($instructeurId);
         $instructeurName = $instructeur->name;
         // $instructeurMail = $instructeur->email;

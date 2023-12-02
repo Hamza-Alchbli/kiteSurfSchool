@@ -28,7 +28,7 @@ class UserController extends Controller
         foreach ($users as $user) {
             $user->role = strtolower(GetRoleNameByNumber::getRoleName($user->role));
         }
-        return Inertia::render('Users/AllUsers', [
+        return Inertia::render('Users/index', [
             'users' => $users,
         ]);
     }

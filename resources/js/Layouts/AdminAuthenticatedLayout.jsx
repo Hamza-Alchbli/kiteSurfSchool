@@ -30,6 +30,11 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                     Users
                                 </NavLink>
                             </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('payments')} active={route().current('payments')}>
+                                    Payments
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -102,6 +107,9 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('users')} active={route().current('users')}>
                             Users
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('payments')} active={route().current('payments')}>
+                            Payments
                         </ResponsiveNavLink>
                     </div>
 

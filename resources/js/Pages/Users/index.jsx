@@ -1,6 +1,5 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import DangerButton from "@/Components/DangerButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DeleteSelectedUserForm from "./Partials/DeleteSelectedUserForm";
 import SuspendSelectedUserForm from "./Partials/SuspendSelectedUser";
@@ -9,8 +8,9 @@ import Dropdown from "@/Components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import PrimaryButton from "@/Components/PrimaryButton";
-export default function AllUsers({ auth, users }) {
+
+
+export default function index({ auth, users }) {
     // get the user role from the route
     const [roleFilter, setRoleFilter] = useState("all");
     const [searchText, setSearchText] = useState("");

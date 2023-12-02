@@ -10,6 +10,7 @@ use App\Http\Middleware\AdminEmployee;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\controllers\ReservationController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,9 @@ Route::middleware(['auth', 'verified', AdminUser::class])->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::patch('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
     Route::patch('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
+
+    Route::get('/payments', [PaymentController::class, 'payments'])->name('payments');
+    Route::delete('/payments/{id}', [PaymentController::class, 'destroy'])->name('payments.destroy');
 });
 
 Route::middleware(['auth', 'verified', AdminEmployee::class])->group(function(){
