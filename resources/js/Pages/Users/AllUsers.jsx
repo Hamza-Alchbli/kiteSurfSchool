@@ -48,7 +48,7 @@ export default function AllUsers({ auth, users }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-4">
                     {/* map throigh the users and show thme */}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
-                        <div className="overflow-x-auto min-h-screen">
+                        <div className="overflow-x-auto pb-32">
                             {/* search input */}
                             {/* Filter and Search Controls */}
                             <div className="flex space-x-4 mb-4 p-4">
@@ -77,11 +77,6 @@ export default function AllUsers({ auth, users }) {
                                     Suspended
                                 </SecondaryButton>
                                 <SecondaryButton
-                                    // check if the role filter is admin
-                                    // if it is then add the active class
-                                    // className={
-                                    //     roleFilter === "admin" ? "bg-black" : ""
-                                    // }
                                     onClick={() => setRoleFilter("admin")}
                                     active={roleFilter === "admin"}
                                 >
@@ -103,7 +98,7 @@ export default function AllUsers({ auth, users }) {
 
                                 {/* Search Input */}
                             </div>
-                            <table className="min-w-full divide-y divide-gray-200 min-h-300">
+                            <table className="min-w-full divide-y divide-gray-200 min-h-300 mb-10">
                                 <thead className="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <th

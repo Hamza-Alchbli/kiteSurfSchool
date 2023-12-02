@@ -22,15 +22,15 @@ const CustomEvent = ({ event }) => (
 export default function DashboardAdmin({
     auth,
     message,
-    reservations,
+    paidReservations,
     instructeurs,
 }) {
     const [myEventsList, setMyEventsList] = useState([]);
     const [instructeur, setInstructeur] = useState("all");
-    // console.log(reservations);
+    // console.log(paidReservations);
 
     useEffect(() => {
-        reservations.map((reservation) => {
+        paidReservations.map((reservation) => {
             setMyEventsList((myEventsList) => [
                 ...myEventsList,
                 {
@@ -49,7 +49,7 @@ export default function DashboardAdmin({
     useEffect(() => {
         if (instructeur == "all") {
             setMyEventsList([]);
-            reservations.map((reservation) => {
+            paidReservations.map((reservation) => {
                 setMyEventsList((myEventsList) => [
                     ...myEventsList,
                     {
@@ -65,7 +65,7 @@ export default function DashboardAdmin({
             });
         } else {
             setMyEventsList([]);
-            reservations.map((reservation) => {
+            paidReservations.map((reservation) => {
                 if (reservation.instructer_id == instructeur) {
                     setMyEventsList((myEventsList) => [
                         ...myEventsList,

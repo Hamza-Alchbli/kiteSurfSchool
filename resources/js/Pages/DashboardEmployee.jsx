@@ -49,6 +49,11 @@ export default function DashboardAdmin({ auth, user, reservations, message  }) {
                             Welcome, you are an {message}
                         </div>
                     </div>
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
+                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                            Total reservations found : {myEventsList.length}
+                        </div>
+                    </div>
                     <div className="bg-white  overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4 p-4">
                         <Calendar
                             localizer={localizer}

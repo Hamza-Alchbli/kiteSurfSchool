@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Enum\UserRoleEnum;
+use App\Enum\PaymentEnum;
 use App\Helpers\GetRoleNameByNumber;
 use App\Models\User;
 use App\Models\Reservation;
@@ -34,11 +35,18 @@ class DashboardController extends Controller
 
     public function adminDashboard($roleName){
         $reservations = Reservation::all();
-        $reservations->load('package');
+
+        $reservations->load('package')->load('payment');
+        $paidReservations = $reservations->filter(function($reservation){
+            return $reservation->payment->payment_status == PaymentEnum::COMPLETED->value;
+        });
+
+        // dd($reservations);
         $instructeurs = User::where('role', UserRoleEnum::EMPLOYEE->value)->get();
 
         return Inertia::render('DashboardAdmin', [
             'message' => $roleName,
+            'paidReservations' => $paidReservations,
             'reservations' => $reservations,
             'instructeurs' => $instructeurs,
         ]);
@@ -52,7 +60,10 @@ class DashboardController extends Controller
 
     public function employeeDashboard($roleName){
         $user = Auth::user();
-        $reservations = $user->reservations->load('package');
+        $allReservations = $user->reservations->load('package')->load('payment');
+        $reservations = $allReservations->filter(function($reservation){
+            return $reservation->payment->payment_status == PaymentEnum::COMPLETED->value;
+        });
         return Inertia::render('DashboardEmployee', [
             'message' => $roleName,
             'user' => $user,
