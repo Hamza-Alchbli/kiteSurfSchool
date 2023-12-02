@@ -28,6 +28,13 @@ class ReservationController extends Controller
         $reservation = Reservation::find($id);
         $userId = $reservation->user_id;
 
+        $instructeurId = $reservation->instructer_id;
+        $instructeur = User::find($instructeurId);
+        $instructeurName = $instructeur->name;
+        // $instructeurMail = $instructeur->email;
+        $instructeurMail = 'hamzaomenxx@gmail.com';
+
+
         $user = User::find($userId);
 
         $message = '';
@@ -41,8 +48,8 @@ class ReservationController extends Controller
         $paymentDetails = $reservation->payment()->get();
         $paymentStatus = $paymentDetails[0]->payment_status;
         // Send email to user
-        $to_name = $user->name;
-        $to_email = 'hamzaomenxx@gmail.com';
+        $userName = $user->name;
+        $userMail = 'hamzaomenxx@gmail.com';
 
         $data = [
             'reason' => $reason,
@@ -50,7 +57,8 @@ class ReservationController extends Controller
             'paymentStatus' => $paymentStatus,
 
         ];
-        Mail::to($to_email)->send(new ReservationDeleted($to_name, $data));
+        Mail::to($userMail)->send(new ReservationDeleted($userName, $data));
+        Mail::to($instructeurMail)->send(new ReservationDeleted($instructeurName, $data));
 
 
         $reservation->payment()->delete();

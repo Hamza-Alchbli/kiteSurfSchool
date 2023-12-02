@@ -30,8 +30,8 @@ export default function CancelLeassonForm({ className = "", eventId }) {
             route("reservations.destroy", { id: eventId }),
             {
                 preserveScroll: true,
-                // onSuccess: () => closeModal(),
-                // onFinish: () => reset(),
+                onSuccess: () => closeModal(),
+                onFinish: () => reset(),
             }
         );
     };

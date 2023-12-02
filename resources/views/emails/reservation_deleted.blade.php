@@ -16,6 +16,8 @@
         <p>You did not pay for the Reservation. No action needed</p>
     @endif
 
+    <p>Reservation details:</p>
+
 
     <p>Best regards,</p>
     <p>Your Company</p>
