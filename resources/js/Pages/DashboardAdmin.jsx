@@ -1,21 +1,159 @@
-import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import moment from "moment";
+import CancelLeassonForm from "./DashoardPartials/CancelLeassonForm";
 
-export default function DashboardAdmin({ auth, message }) {
-    // get the user role from the route
+import React, { useState, useEffect } from "react";
+
+const localizer = momentLocalizer(moment);
+
+// Custom Event component with a cancel button
+const CustomEvent = ({ event }) => (
+    <div className="flex gap-4 items-center">
+        <strong>{event.title}</strong>
+        <div>
+            <CancelLeassonForm eventId={event.id} />
+        </div>
+    </div>
+);
+
+export default function DashboardAdmin({
+    auth,
+    message,
+    reservations,
+    instructeurs,
+}) {
+    const [myEventsList, setMyEventsList] = useState([]);
+    const [instructeur, setInstructeur] = useState("all");
+    // console.log(reservations);
+
+    useEffect(() => {
+        reservations.map((reservation) => {
+            setMyEventsList((myEventsList) => [
+                ...myEventsList,
+                {
+                    id: reservation.id,
+                    title: reservation.package.name,
+                    start: new Date(reservation.start_time),
+                    end: new Date(
+                        new Date(reservation.start_time).getTime() +
+                            reservation.package.duration * 60 * 60 * 1000
+                    ),
+                },
+            ]);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (instructeur == "all") {
+            setMyEventsList([]);
+            reservations.map((reservation) => {
+                setMyEventsList((myEventsList) => [
+                    ...myEventsList,
+                    {
+                        id: reservation.id,
+                        title: reservation.package.name,
+                        start: new Date(reservation.start_time),
+                        end: new Date(
+                            new Date(reservation.start_time).getTime() +
+                                reservation.package.duration * 60 * 60 * 1000
+                        ),
+                    },
+                ]);
+            });
+        } else {
+            setMyEventsList([]);
+            reservations.map((reservation) => {
+                if (reservation.instructer_id == instructeur) {
+                    setMyEventsList((myEventsList) => [
+                        ...myEventsList,
+                        {
+                            id: reservation.id,
+                            title: reservation.package.name,
+                            start: new Date(reservation.start_time),
+                            end: new Date(
+                                new Date(reservation.start_time).getTime() +
+                                    reservation.package.duration *
+                                        60 *
+                                        60 *
+                                        1000
+                            ),
+                        },
+                    ]);
+                }
+            });
+        }
+    }, [instructeur])
+
+    const filterInstructeur = (e) => {
+        setInstructeur(e.target.value);
+    };
+
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    Dashboard
+                </h2>
+            }
         >
             <Head title="Dashboard" />
 
             <div className="py-12 ">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-4">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">Welcome you are an {message}</div>
+                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                            Welcome, you are an {message}
+                        </div>
                     </div>
-
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
+                        <div className="p-6 text-gray-900 dark:text-gray-100 flex flex-col gap-4">
+                            <h2 className="text-2xl font-bold">Calendar</h2>
+                            <select
+                                value={instructeur}
+                                onChange={(e) => {
+                                    filterInstructeur(e);
+                                }}
+                                className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                            >
+                                <option value="all">All Instructeurs</option>
+                                {instructeurs.length > 0 ? (
+                                    instructeurs.map((instructeur) => (
+                                        <option
+                                            key={instructeur.id}
+                                            value={instructeur.id}
+                                        >
+                                            {instructeur.name}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="all">
+                                        All Instructeurs
+                                    </option>
+                                )}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
+                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                            Total found : {myEventsList.length}
+                        </div>
+                    </div>
+                    <div className="bg-white  overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4 p-4">
+                        <Calendar
+                            localizer={localizer}
+                            events={myEventsList}
+                            startAccessor="start"
+                            endAccessor="end"
+                            style={{ height: 500 }}
+                            components={{
+                                event: CustomEvent,
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </AdminAuthenticatedLayout>

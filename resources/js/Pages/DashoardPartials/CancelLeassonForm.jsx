@@ -45,6 +45,7 @@ export default function CancelLeassonForm({ className = "", eventId }) {
     return (
         <section className={`space-y-6 ${className}`}>
             <DangerButton onClick={confirmUserDeletion}>Cancel</DangerButton>
+            {/* <DangerButton onClick={confirmUserDeletion}>x</DangerButton> */}
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">

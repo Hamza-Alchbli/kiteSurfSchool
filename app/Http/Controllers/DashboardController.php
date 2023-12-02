@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Enum\UserRoleEnum;
 use App\Helpers\GetRoleNameByNumber;
 use App\Models\User;
+use App\Models\Reservation;
 class DashboardController extends Controller
 {
 
@@ -32,8 +33,14 @@ class DashboardController extends Controller
     }
 
     public function adminDashboard($roleName){
+        $reservations = Reservation::all();
+        $reservations->load('package');
+        $instructeurs = User::where('role', UserRoleEnum::EMPLOYEE->value)->get();
+
         return Inertia::render('DashboardAdmin', [
             'message' => $roleName,
+            'reservations' => $reservations,
+            'instructeurs' => $instructeurs,
         ]);
     }
 
@@ -47,6 +54,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         $reservations = $user->reservations->load('package');
         return Inertia::render('DashboardEmployee', [
+            'message' => $roleName,
             'user' => $user,
             'reservations' => $reservations,
         ]);

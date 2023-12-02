@@ -34,14 +34,14 @@ class ReservationsSeeder extends Seeder
                 'instructer_id' => 2, // Replace with the actual instructer_id
                 'package_id' => 3, // Replace with the actual package_id
                 'location_id' => 3, // Replace with the actual location_id
-                'start_time' => '2023-02-05 09:00:00',
+                'start_time' => '2024-02-05 09:00:00',
             ],
             [
                 'user_id' => 8, // Replace with the actual user_id
                 'instructer_id' => 2, // Replace with the actual instructer_id
                 'package_id' => 4, // Replace with the actual package_id
                 'location_id' => 4, // Replace with the actual location_id
-                'start_time' => '2023-03-30 12:00:00',
+                'start_time' => '2024-03-30 12:00:00',
             ],
         ]);
     }
