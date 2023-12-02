@@ -48,7 +48,7 @@ export default function AllUsers({ auth, users }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-4">
                     {/* map throigh the users and show thme */}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-4">
-                        <div className="overflow-x-auto min-h-screen-50">
+                        <div className="overflow-x-auto min-h-screen">
                             {/* search input */}
                             {/* Filter and Search Controls */}
                             <div className="flex space-x-4 mb-4 p-4">
