@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use Inertia\Inertia;
@@ -9,6 +10,8 @@ use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationDeleted;
+use App\Enum\PaymentEnum;
+use App\Mail\PaymentConfirm;
 
 class PaymentController extends Controller
 {
@@ -52,6 +55,7 @@ class PaymentController extends Controller
             'reason' => $reason,
             'message' => 'The reservation has been cancelled because the employee is sick.',
             'paymentStatus' => $payment->payment_status,
+            'reservation_startTime' => $reservation->start_time,
         ];
 
         Mail::to($userMail)->send(new ReservationDeleted($userName, $data));
@@ -60,6 +64,7 @@ class PaymentController extends Controller
             'reason' => $reason,
             'message' => 'The reservation has been cancelled because the employee is sick.',
             'paymentStatus' => $payment->payment_status,
+            'reservation_startTime' => $reservation->start_time,
         ];
 
         Mail::to($instructorMail)->send(new ReservationDeleted($instructorName, $data));
@@ -77,7 +82,13 @@ class PaymentController extends Controller
     public function confirm(Request $request) {
         $id = $request->id;
         $payment = Payment::find($id);
+        $payment->payment_status = PaymentEnum::COMPLETED;
+
+        $payment->save();
         $reservation = Reservation::find($payment->reservation_id);
+
+        $reservation->is_paid = PaymentEnum::COMPLETED;
+        $reservation->save();
 
         $user = User::find($reservation->user_id);
         $instructor = User::find($reservation->instructor_id);
@@ -101,19 +112,21 @@ class PaymentController extends Controller
 
         $data = [
             'reason' => '',
-            'message' => 'The reservation has been cancelled because the employee is sick.',
+            'message' => 'Payment has been confirmed.',
+            'reservation_startTime'=> $reservation->start_time,
             'paymentStatus' => $payment->payment_status,
         ];
 
-        Mail::to($userMail)->send(new ReservationDeleted($userName, $data));
+        Mail::to($userMail)->send(new PaymentConfirm($userName, $data));
 
         $data = [
             'reason' => '',
-            'message' => 'The reservation has been cancelled because the employee is sick.',
+            'message' => 'Payment has been confirmed.',
+            'reservation_startTime'=> $reservation->start_time,
             'paymentStatus' => $payment->payment_status,
         ];
 
-        Mail::to($instructorMail)->send(new ReservationDeleted($instructorName, $data));
+        Mail::to($instructorMail)->send(new PaymentConfirm($instructorName, $data));
 
     }
 }

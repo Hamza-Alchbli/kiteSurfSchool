@@ -55,6 +55,7 @@ class ReservationController extends Controller
             'reason' => $reason,
             'message' => $message,
             'paymentStatus' => $paymentStatus,
+            'reservation_startTime' => $reservation->start_time,
 
         ];
         Mail::to($userMail)->send(new ReservationDeleted($userName, $data));

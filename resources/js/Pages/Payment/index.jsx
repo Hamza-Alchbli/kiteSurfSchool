@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import DeleteSelectedPaymentForm from "./Partials/DeleteSelectedPaymentForm";
+import ConfirmSelectedPaymentForm from "./Partials/ConfirmSelectedPaymentForm";
 
 export default function index({ auth, payments }) {
     // get the user role from the route
@@ -134,15 +135,14 @@ export default function index({ auth, payments }) {
                                                     paymentStatus[
                                                         payment.payment_status
                                                     ]
-
                                                 }
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 {
-                                                     reservationStatus[
-                                                        payment.reservation.is_paid
+                                                    reservationStatus[
+                                                        payment.reservation
+                                                            .is_paid
                                                     ]
-
                                                 }
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
@@ -152,38 +152,37 @@ export default function index({ auth, payments }) {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap flex gap-2 ">
                                                 <Dropdown>
-                                                <Dropdown.Trigger>
-                                                    <FontAwesomeIcon
-                                                        icon={faCircleInfo}
-                                                        style={{
-                                                            color: "#ffffff",
-                                                            cursor: "pointer",
-                                                        }}
-                                                    />
-                                                </Dropdown.Trigger>
-                                                <Dropdown.Content>
-                                                    <div className="flex flex-col gap-4">
-                                                        {/* <EditSelectedUserForm
-                                                            user={user}
-                                                            className="ml-0:important"
-                                                        /> */}
-                                                        {/* <SuspendSelectedUserForm
-                                                            userId={user.id}
-                                                            ispaid={
-                                                                user.paid
-                                                            }
-                                                        /> */}
-                                                        {/* <DeleteSelectedUserForm
-                                                            userId={user.id}
-                                                        /> */}
-                                                        <DeleteSelectedPaymentForm
-                                                            paymentId={
-                                                                payment.id
-                                                            }
+                                                    <Dropdown.Trigger>
+                                                        <FontAwesomeIcon
+                                                            icon={faCircleInfo}
+                                                            style={{
+                                                                color: "#ffffff",
+                                                                cursor: "pointer",
+                                                            }}
                                                         />
-                                                    </div>
-                                                </Dropdown.Content>
-                                            </Dropdown>
+                                                    </Dropdown.Trigger>
+                                                    <Dropdown.Content>
+                                                        <div className="flex flex-col gap-4">
+                                                            {paymentStatus[
+                                                                payment
+                                                                    .payment_status
+                                                            ] == "Pending" ? (
+                                                                <ConfirmSelectedPaymentForm
+                                                                    paymentId={
+                                                                        payment.id
+                                                                    }
+                                                                />
+                                                            ) : (
+                                                                ""
+                                                            )}
+                                                            <DeleteSelectedPaymentForm
+                                                                paymentId={
+                                                                    payment.id
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </Dropdown.Content>
+                                                </Dropdown>
 
                                                 {/* more info icon */}
                                             </td>
