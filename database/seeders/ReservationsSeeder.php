@@ -16,7 +16,7 @@ class ReservationsSeeder extends Seeder
     {
         DB::table('reservations')->insert([
             [
-                'user_id' => 5, // Replace with the actual user_id
+                'user_id' => 3, // Replace with the actual user_id
                 'instructor_id' => 2, // Replace with the actual instructor_id
                 'package_id' => 1, // Replace with the actual package_id
                 'location_id' => 1, // Replace with the actual location_id
@@ -24,7 +24,7 @@ class ReservationsSeeder extends Seeder
                 'is_paid' => true,
             ],
             [
-                'user_id' => 6, // Replace with the actual user_id
+                'user_id' => 3, // Replace with the actual user_id
                 'instructor_id' => 2, // Replace with the actual instructor_id
                 'package_id' => 2, // Replace with the actual package_id
                 'location_id' => 2, // Replace with the actual location_id
@@ -32,7 +32,7 @@ class ReservationsSeeder extends Seeder
                 'is_paid' => true,
             ],
             [
-                'user_id' => 7, // Replace with the actual user_id
+                'user_id' => 3, // Replace with the actual user_id
                 'instructor_id' => 2, // Replace with the actual instructor_id
                 'package_id' => 3, // Replace with the actual package_id
                 'location_id' => 3, // Replace with the actual location_id
@@ -40,7 +40,7 @@ class ReservationsSeeder extends Seeder
                 'is_paid' => false,
             ],
             [
-                'user_id' => 8, // Replace with the actual user_id
+                'user_id' => 3, // Replace with the actual user_id
                 'instructor_id' => 2, // Replace with the actual instructor_id
                 'package_id' => 4, // Replace with the actual package_id
                 'location_id' => 4, // Replace with the actual location_id
