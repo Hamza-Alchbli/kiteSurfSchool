@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified', AdminUser::class])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', AdminEmployee::class])->group(function(){
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations');
     Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
 });
 

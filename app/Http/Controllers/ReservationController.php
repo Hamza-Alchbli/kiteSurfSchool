@@ -19,6 +19,31 @@ use App\Mail\ReservationDeleted;
 
 class ReservationController extends Controller
 {
+
+    public function index()
+    {
+
+        $user = Auth::user();
+        $userRole = strtolower(GetRoleNameByNumber::getRoleName($user->role));
+        if ($userRole == 'admin') {
+            $requestToCancel = Reservation::where('void_request', true)->get();
+        } else {
+            $requestToCancel = Reservation::where('void_request', true)->where('instructor_id', $user->id)->get();
+        }
+
+
+        $requestToCancel->map(function ($reservation) {
+            $reservation->user = User::find($reservation->user_id);
+            $reservation->instructor = User::find($reservation->instructor_id);
+            return $reservation;
+        });
+
+
+        $data = [
+            'requestToCancel' => $requestToCancel,
+        ];
+        return Inertia::render('Reservations/index', $data);
+    }
     public function destroy(Request $request): RedirectResponse
     {
         $id = $request->id;
@@ -44,10 +69,11 @@ class ReservationController extends Controller
             $message = "The reservation on $reservation->start_time has been cancelled because the employee is sick.";
         } else if ($reason == 'weather') {
             $message = 'The reservation has been cancelled because of bad weather(wind power > 10).';
+        } else {
+            $message = 'The reservation has been cancelled because of the following reason: ' . $reason;
         }
 
-        $paymentDetails = $reservation->payment()->get();
-        $paymentStatus = $paymentDetails[0]->payment_status;
+        $paymentStatus = $reservation->is_paid;
         // Send email to user
         $userName = $user->name;
         $userMail = 'hamzaomenxx@gmail.com';
@@ -57,9 +83,19 @@ class ReservationController extends Controller
             'message' => $message,
             'paymentStatus' => $paymentStatus,
             'reservation_startTime' => $reservation->start_time,
+            'role' => GetRoleNameByNumber::getRoleName($user->role),
         ];
 
         Mail::to($userMail)->send(new ReservationDeleted($userName, $data));
+        $data = [
+            'reason' => $reason,
+            'message' => $message,
+            'paymentStatus' => $paymentStatus,
+            'reservation_startTime' => $reservation->start_time,
+            'role' => GetRoleNameByNumber::getRoleName($instructeur->role),
+        ];
+
+
         Mail::to($instructeurMail)->send(new ReservationDeleted($instructeurName, $data));
 
 
@@ -126,6 +162,9 @@ class ReservationController extends Controller
 
         Mail::to($instructeurMail)->send(new RequestCancel($instructeurName, $data));
 
+
+
+        $reservation->void_request_reason = $reason;
         $reservation->void_request = true;
         $reservation->save();
     }

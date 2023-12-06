@@ -10,9 +10,9 @@
 
     <p>Thank you for using our service.</p>
 
-    @if ($data['paymentStatus'] == 'completed')
+    @if ($data['paymentStatus'] && $data['role'] == 'CUSTOMER')
         <p>Payment will be refunded to your account.</p>
-    @else
+    @elseif ($data['role'] == 'CUSTOMER')
         <p>You did not pay for the Reservation. No action needed</p>
     @endif
 

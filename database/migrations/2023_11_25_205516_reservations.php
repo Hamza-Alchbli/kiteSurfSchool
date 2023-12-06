@@ -20,6 +20,8 @@ return new class extends Migration
             $table->dateTime('start_time');
             $table->boolean('is_paid')->default(false);
             $table->boolean('void_request')->default(false);
+            $table->string('void_request_reason')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });
