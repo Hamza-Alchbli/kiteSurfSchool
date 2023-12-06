@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('location_id')->constrained();
             $table->dateTime('start_time');
             $table->boolean('is_paid')->default(false);
+            $table->boolean('void_request')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

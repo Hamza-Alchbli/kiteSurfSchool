@@ -4,13 +4,13 @@ import { Head } from '@inertiajs/react';
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import CancelLeassonForm from "./DashoardPartials/CancelLeassonForm";
+import CustomerCancelLeassonForm from "./DashoardPartials/CustomerCancelLeassonForm";
 const localizer = momentLocalizer(moment);
 const CustomEvent = ({ event }) => (
     <div className="flex gap-4 items-center ">
         <strong>{event.title}</strong>
         <div>
-            <CancelLeassonForm eventId={event.id} />
+            <CustomerCancelLeassonForm eventId={event.id} voidRequest={event.voidRequest} />
         </div>
     </div>
 );
@@ -27,6 +27,7 @@ export default function DashboardAdmin({ auth, message, reservations }) {
                 new Date(reservation.start_time).getTime() +
                     reservation.package.duration * 60 * 60 * 1000
             ),
+            voidRequest: reservation.void_request,
         });
     });
 
