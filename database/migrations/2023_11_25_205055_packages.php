@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->decimal('price', 8, 2);
-            $table->integer('duration'); // Duration in minutes or hours, adjust as needed
+            $table->integer('duration');
+            $table->integer('total_days');
             $table->timestamps();
             $table->softDeletes();
         });

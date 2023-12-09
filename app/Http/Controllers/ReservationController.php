@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\UserRoleEnum;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -16,13 +17,15 @@ use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationDeleted;
+use App\Models\Package;
+use App\Models\Location;
+use DateTime;
 
 class ReservationController extends Controller
 {
 
     public function index()
     {
-
         $user = Auth::user();
         $userRole = strtolower(GetRoleNameByNumber::getRoleName($user->role));
         if ($userRole == 'admin') {
@@ -43,6 +46,135 @@ class ReservationController extends Controller
             'requestToCancel' => $requestToCancel,
         ];
         return Inertia::render('Reservations/index', $data);
+    }
+
+    public function store(Request $request)
+    {
+        // dd($request->all());
+        $reservation = $request->reservations;
+        $userId = $reservation['user_id'];
+        $packageId = $reservation['plan_id'];
+        $locationId = $reservation['location_id'];
+        $selectedDatetimes = $request->selectedDatetimes;
+        // dd($selectedDatetimes);
+
+        // algorithm to chose an instructor if he is not busy in the selected datetimes plus 4 hours after the last selected datetime
+        $instructors = User::where('role', UserRoleEnum::EMPLOYEE->value)->with('reservations')->get();
+        $packages = Package::all();
+        $selectedPackage = $packages->where('id', $packageId)->first();
+
+
+        // availableDays will be like this [ selectedDatetime1 => true, selectedDatetime2 => true, ...]
+        $availableDays = [];
+
+
+
+        foreach ($selectedDatetimes as $selectedDatetime) {
+            // looping through every selected datetimes from the request
+            $availableDays[$selectedDatetime] = true;
+            $selectedDatetime = DateTime::createFromFormat('Y-m-d H:i:s', $selectedDatetime);
+            $selectedDateEndtime = clone $selectedDatetime;
+            $selectedDateEndtime->modify('+' . $selectedPackage->duration . ' hours');
+
+            $firstAvailableInstructor = null;
+
+            foreach ($instructors as $instructor) {
+                // looping through every instructor
+                $reservations = Reservation::where('instructor_id', $instructor->id)->with('package')->get();
+                $allInstructorReservations = $reservations->map(function ($reservation) {
+                    $endTime = DateTime::createFromFormat('Y-m-d H:i:s', $reservation->start_time);
+                    $endTime->modify('+' . $reservation->package->duration . ' hours');
+                    return [
+                        'start_time' => DateTime::createFromFormat('Y-m-d H:i:s', $reservation->start_time),
+                        'end_time' => $endTime,
+                    ];
+                });
+
+                $isAvailable = true;
+
+                foreach ($allInstructorReservations as $instructorReservation) {
+                    // looping through every reservation of the instructor
+                    $instructorReservationStartTime = $instructorReservation['start_time'];
+                    $instructorReservationEndTime = $instructorReservation['end_time'];
+
+                    $isAvailable = $this->checkIfInstructorIsAvailable($instructorReservationStartTime, $instructorReservationEndTime, $selectedDatetime, $selectedDateEndtime);
+
+                    if (!$isAvailable) {
+                        // if the instructor is not available in the selected datetime
+                        break;
+                    }
+                }
+
+                if ($isAvailable) {
+                    // If the instructor is available, add the reservation to the first available instructor and break out of the loop
+                    $firstAvailableInstructor = $instructor;
+                    break;
+                }
+            }
+
+            // Check if a first available instructor was found
+            if ($firstAvailableInstructor) {
+                // Add the reservation to the database here
+                $this->userMakeReservation($userId, $firstAvailableInstructor->id, $packageId, $locationId, $selectedDatetime->format('Y-m-d H:i:s'));
+            } else {
+                // If no available instructor was found, mark the day as unavailable
+                $availableDays[$selectedDatetime->format('Y-m-d H:i:s')] = false;
+            }
+        }
+
+        if (in_array(false, $availableDays)) {
+            $days = array_values($availableDays);
+            // filter where is false
+            $days = array_filter($days, function ($day) {
+                return $day == false;
+            });
+
+            $indices = array_map(function ($day) {
+                return $day + 1;
+            }, array_keys($days));;
+            $days =  implode(', ', $indices);
+            return inertia('Welcome')->with([
+                // 'error' => 'The instructors is not available in : ',
+                'error' => 'The instructors is not available in the following selected days: ' .  $days,
+                'days' => $days,
+                'packages' => Package::all(),
+                'locations' => Location::all(),
+            ]);
+        } else {
+            // If the instructor is available in the selected datetimes
+            return inertia('Welcome')->with([
+                'success' => 'Thank you for your reservation. please check your email for more details.',
+                'packages' => Package::all(),
+                'locations' => Location::all(),
+            ]);
+        }
+    }
+
+    private function checkIfInstructorIsAvailable($instructorReservationStartTime, $instructorReservationEndTime, $selectedDatetime, $selectedDateEndtime)
+    {
+        if ($selectedDatetime >= $instructorReservationStartTime && $selectedDatetime <= $instructorReservationEndTime) {
+            // Selected datetime is between reservations start time and end time
+            return false;
+        } else if ($selectedDateEndtime >= $instructorReservationStartTime && $selectedDateEndtime <= $instructorReservationEndTime) {
+            // Selected datetime end time is between reservations start time and end time
+            return false;
+        } else if ($selectedDatetime <= $instructorReservationStartTime && $selectedDateEndtime >= $instructorReservationEndTime) {
+            // Selected datetime start time is before reservations start time and end time is after reservations end time
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private function userMakeReservation($userId, $instructorId, $packageId, $locationId, $selectedDatetime)
+    {
+        $reservation = new Reservation();
+        $reservation->user_id = $userId;
+        $reservation->instructor_id = $instructorId;
+        $reservation->package_id = $packageId;
+        $reservation->location_id = $locationId;
+        $reservation->start_time = $selectedDatetime;
+        $reservation->save();
     }
     public function destroy(Request $request): RedirectResponse
     {

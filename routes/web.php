@@ -11,7 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\controllers\ReservationController;
 use App\Http\Controllers\Admin\PaymentController;
-
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,16 +24,7 @@ use App\Http\Controllers\Admin\PaymentController;
 */
 
 
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
+Route::get('/', [HomeController::class, 'index']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route to users page and check if user is logged in, verified and has admin role
@@ -48,7 +39,7 @@ Route::middleware(['auth', 'verified', AdminUser::class])->group(function () {
     Route::delete('/payments/{id}', [PaymentController::class, 'destroy'])->name('payments.destroy');
 });
 
-Route::middleware(['auth', 'verified', AdminEmployee::class])->group(function(){
+Route::middleware(['auth', 'verified', AdminEmployee::class])->group(function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations');
     Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
 });
@@ -58,8 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::delete('/reservations/user/{id}', [ReservationController::class, 'destroyUser'])->name('reservations.user.destroy');
-
 });
 
 require __DIR__ . '/auth.php';

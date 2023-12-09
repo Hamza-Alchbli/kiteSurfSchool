@@ -54,7 +54,7 @@ class DashboardController extends Controller
 
     public function userDashboard($roleName){
         $user = Auth::user();
-        $allReservations = $user->userReservations->load('package')->load('payment');
+        $allReservations = $user->reservations->load('package')->load('payment');
         $reservations = $allReservations->filter(function($reservation){
             return $reservation->payment->payment_status == PaymentEnum::COMPLETED->value;
         });
