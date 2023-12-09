@@ -17,6 +17,7 @@ import ConfirmSelectedPaymentForm from "./Partials/ConfirmSelectedPaymentForm";
 export default function index({ auth, payments }) {
     // get the user role from the route
     const paymentStatus = ["Pending", "Paid"];
+    const userPaud = ['no', 'yes']
     const reservationStatus = ["Waiting", "Confirmed"];
 
     const [searchText, setSearchText] = useState("");
@@ -102,6 +103,12 @@ export default function index({ auth, payments }) {
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
+                                            User Paid
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                                        >
                                             Reservation status
                                         </th>
                                         <th
@@ -134,6 +141,13 @@ export default function index({ auth, payments }) {
                                                 {
                                                     paymentStatus[
                                                         payment.payment_status
+                                                    ]
+                                                }
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                {
+                                                    userPaud[
+                                                        payment.user_payment_status
                                                     ]
                                                 }
                                             </td>

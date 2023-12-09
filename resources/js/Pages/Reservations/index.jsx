@@ -12,10 +12,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import ConfirmCancelForm from "./Partials/ConfirmCancelForm";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 export default function index({ auth, requestToCancel }) {
-
+    const LayoutComponent =
+        auth.user.role == 5 ? AdminAuthenticatedLayout : AuthenticatedLayout;
     return (
-        <AuthenticatedLayout
+        <LayoutComponent
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -64,117 +66,65 @@ export default function index({ auth, requestToCancel }) {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
-                                    {requestToCancel.map((request) => (
-                                        <tr
-                                            key={request.id}
-                                            className="p-6 text-gray-900 dark:text-gray-100"
-                                        >
+                                    {requestToCancel.length == 0 ? (
+                                        <tr className="p-6 text-gray-900 dark:text-gray-100">
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                {request.user.name}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {request.user.email}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {request.void_request_reason}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <Dropdown>
-                                                    <Dropdown.Trigger>
-                                                        <FontAwesomeIcon
-                                                            icon={faCircleInfo}
-                                                            style={{
-                                                                color: "#ffffff",
-                                                                cursor: "pointer",
-                                                            }}
-                                                        />
-                                                    </Dropdown.Trigger>
-                                                    <Dropdown.Content>
-                                                        <div className="flex flex-col gap-4">
-                                                                <ConfirmCancelForm
-                                                                    requestToCancelId={request.id}
-                                                                    reason={request.void_request_reason}
-                                                                />
-                                                        </div>
-                                                    </Dropdown.Content>
-                                                </Dropdown>
+                                                No requests to cancel
                                             </td>
                                         </tr>
-                                    ))}
-                                    {/* {filteredPayments.map((payment) => (
-                                        <tr
-                                            key={payment.id}
-                                            className="p-6 text-gray-900 dark:text-gray-100"
-                                        >
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {payment.user.name}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {payment.user.email}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {
-                                                    paymentStatus[
-                                                        payment.payment_status
-                                                    ]
-                                                }
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {
-                                                    reservationStatus[
-                                                        payment.reservation
-                                                            .is_paid
-                                                    ]
-                                                }
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {new Date(
-                                                    payment.created_at
-                                                ).toLocaleDateString()}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap flex gap-2 ">
-                                                <Dropdown>
-                                                    <Dropdown.Trigger>
-                                                        <FontAwesomeIcon
-                                                            icon={faCircleInfo}
-                                                            style={{
-                                                                color: "#ffffff",
-                                                                cursor: "pointer",
-                                                            }}
-                                                        />
-                                                    </Dropdown.Trigger>
-                                                    <Dropdown.Content>
-                                                        <div className="flex flex-col gap-4">
-                                                            {paymentStatus[
-                                                                payment
-                                                                    .payment_status
-                                                            ] == "Pending" ? (
-                                                                <ConfirmSelectedPaymentForm
-                                                                    paymentId={
-                                                                        payment.id
+                                    ) : (
+                                        requestToCancel.map((request) => (
+                                            <tr
+                                                key={request.id}
+                                                className="p-6 text-gray-900 dark:text-gray-100"
+                                            >
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {request.user.name}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {request.user.email}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {
+                                                        request.void_request_reason
+                                                    }
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <Dropdown>
+                                                        <Dropdown.Trigger>
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faCircleInfo
+                                                                }
+                                                                style={{
+                                                                    color: "#ffffff",
+                                                                    cursor: "pointer",
+                                                                }}
+                                                            />
+                                                        </Dropdown.Trigger>
+                                                        <Dropdown.Content>
+                                                            <div className="flex flex-col gap-4">
+                                                                <ConfirmCancelForm
+                                                                    requestToCancelId={
+                                                                        request.id
+                                                                    }
+                                                                    reason={
+                                                                        request.void_request_reason
                                                                     }
                                                                 />
-                                                            ) : (
-                                                                ""
-                                                            )}
-                                                            <DeleteSelectedPaymentForm
-                                                                paymentId={
-                                                                    payment.id
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </Dropdown.Content>
-                                                </Dropdown>
-
-                                            </td>
-                                        </tr>
-                                    ))} */}
+                                                            </div>
+                                                        </Dropdown.Content>
+                                                    </Dropdown>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </LayoutComponent>
     );
 }

@@ -33,12 +33,14 @@ export default function Authenticated({ user, header, children }) {
                                         href={route("reservations")}
                                         active={route().current("reservations")}
                                     >
-                                        Reservations
+                                        Reservations Requests
                                     </NavLink>
                                 ) : (
                                     <NavLink
                                         href={route("reservations.user")}
-                                        active={route().current("reservations.user")}
+                                        active={route().current(
+                                            "reservations.user"
+                                        )}
                                     >
                                         My reservations
                                     </NavLink>
@@ -147,6 +149,21 @@ export default function Authenticated({ user, header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        {user.role !== 1 ? (
+                            <ResponsiveNavLink
+                                href={route("reservations")}
+                                active={route().current("reservations")}
+                            >
+                                Reservations Requests
+                            </ResponsiveNavLink>
+                        ) : (
+                            <ResponsiveNavLink
+                                href={route("reservations.user")}
+                                active={route().current("reservations.user")}
+                            >
+                                My reservations
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
