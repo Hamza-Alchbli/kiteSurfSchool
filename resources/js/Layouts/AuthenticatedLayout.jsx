@@ -4,7 +4,7 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
-
+import toast, { Toaster } from "react-hot-toast";
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -36,7 +36,12 @@ export default function Authenticated({ user, header, children }) {
                                         Reservations
                                     </NavLink>
                                 ) : (
-                                    ""
+                                    <NavLink
+                                        href={route("reservations.user")}
+                                        active={route().current("reservations.user")}
+                                    >
+                                        My reservations
+                                    </NavLink>
                                 )}
                             </div>
                         </div>
@@ -179,6 +184,7 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             <main>{children}</main>
+            <Toaster />
         </div>
     );
 }

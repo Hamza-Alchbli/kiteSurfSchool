@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\PaymentEnum;
 use App\Enum\UserRoleEnum;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationDeleted;
 use App\Models\Package;
 use App\Models\Location;
+use App\Models\Payment;
 use DateTime;
 
 class ReservationController extends Controller
@@ -175,6 +177,13 @@ class ReservationController extends Controller
         $reservation->location_id = $locationId;
         $reservation->start_time = $selectedDatetime;
         $reservation->save();
+
+        $payment = new Payment();
+        $payment->user_id = $userId;
+        $payment->reservation_id = $reservation->id;
+        $payment->amount = Package::find($packageId)->price;
+        $payment->payment_status = PaymentEnum::PENDING->value;
+        $payment->save();
     }
     public function destroy(Request $request): RedirectResponse
     {
@@ -299,5 +308,22 @@ class ReservationController extends Controller
         $reservation->void_request_reason = $reason;
         $reservation->void_request = true;
         $reservation->save();
+    }
+
+    public function userReservations() {
+        $user = Auth::user();
+        $allReservations = Reservation::where('user_id', $user->id)->get();
+        $allReservations->load('package')->load('payment');
+
+        return Inertia::render('UserReservations/index', [
+            'reservations' => $allReservations,
+        ]);
+    }
+
+    public function userPaid(Request $request) {
+        $reservation = Reservation::find($request->reservationId);
+        $reservation->load('package')->load('payment');
+        $reservation->payment->user_payment_status = PaymentEnum::COMPLETED->value;
+        $reservation->payment->save();
     }
 }

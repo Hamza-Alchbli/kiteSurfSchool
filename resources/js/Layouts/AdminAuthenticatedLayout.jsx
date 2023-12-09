@@ -4,7 +4,7 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
-
+import toast, { Toaster } from "react-hot-toast";
 export default function AdminAuthenticatedLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -205,6 +205,7 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
             )}
 
             <main>{children}</main>
+            <Toaster />
         </div>
     );
 }

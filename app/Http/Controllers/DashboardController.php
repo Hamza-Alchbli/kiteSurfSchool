@@ -54,13 +54,14 @@ class DashboardController extends Controller
 
     public function userDashboard($roleName){
         $user = Auth::user();
-        $allReservations = $user->reservations->load('package')->load('payment');
-        $reservations = $allReservations->filter(function($reservation){
-            return $reservation->payment->payment_status == PaymentEnum::COMPLETED->value;
-        });
+        $allReservations = Reservation::where('user_id', $user->id)->whereHas('payment', function ($query) {
+            $query->where('payment_status', PaymentEnum::COMPLETED->value);
+        })->get();
+        $allReservations->load('package')->load('payment');
+
         return Inertia::render('DashboardCustomer', [
             'message' => $roleName,
-            'reservations' => $reservations,
+            'reservations' => $allReservations,
         ]);
     }
 

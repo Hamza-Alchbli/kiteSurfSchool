@@ -20,6 +20,7 @@ class PaymentsSeeder extends Seeder
                 'reservation_id' => 1, // Replace with the actual reservation_id
                 'amount' => 175,
                 'payment_status' => PaymentEnum::COMPLETED,
+                'user_payment_status' => PaymentEnum::COMPLETED,
                 'created_at' => now(),
             ],
             [
@@ -27,6 +28,7 @@ class PaymentsSeeder extends Seeder
                 'reservation_id' => 2, // Replace with the actual reservation_id
                 'amount' => 135,
                 'payment_status' => PaymentEnum::COMPLETED,
+                'user_payment_status' => PaymentEnum::COMPLETED,
                 'created_at' => now(),
             ],
             [
@@ -34,6 +36,7 @@ class PaymentsSeeder extends Seeder
                 'reservation_id' => 3, // Replace with the actual reservation_id
                 'amount' => 375,
                 'payment_status' => PaymentEnum::PENDING,
+                'user_payment_status' => PaymentEnum::PENDING,
                 'created_at' => now(),
             ],
             [
@@ -41,6 +44,7 @@ class PaymentsSeeder extends Seeder
                 'reservation_id' => 4, // Replace with the actual reservation_id
                 'amount' => 675,
                 'payment_status' => PaymentEnum::PENDING,
+                'user_payment_status' => PaymentEnum::PENDING,
                 'created_at' => now(),
             ],
         ]);

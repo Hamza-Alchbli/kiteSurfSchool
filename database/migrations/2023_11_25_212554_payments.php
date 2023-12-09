@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('reservation_id')->constrained();
             $table->decimal('amount', 8, 2);
             $table->tinyInteger('payment_status')->default(PaymentEnum::PENDING);
+            $table->tinyInteger('user_payment_status')->default(PaymentEnum::PENDING);
             $table->timestamps();
             $table->softDeletes();
         });
