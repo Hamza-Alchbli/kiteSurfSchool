@@ -83,6 +83,7 @@ class PaymentController extends Controller
         $id = $request->id;
         $payment = Payment::find($id);
         $payment->payment_status = PaymentEnum::COMPLETED;
+        $payment->user_payment_status = PaymentEnum::COMPLETED;
 
         $payment->save();
         $reservation = Reservation::find($payment->reservation_id);
