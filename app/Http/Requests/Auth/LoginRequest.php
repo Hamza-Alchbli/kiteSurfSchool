@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Log;
 class LoginRequest extends FormRequest
 {
     /**
@@ -49,7 +49,14 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        Log::info('User Logged in', [
+            'user' => Auth::user(), 'time' =>
+            now()->format('Y-m-d H:i:s.u')
+        ]);
+
         RateLimiter::clear($this->throttleKey());
+
+
     }
 
     /**

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 class RegisteredUserController extends Controller
 {
@@ -33,7 +34,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             // password must be atleast 12 with 1 capital, 1 number, 1 special character
             'password' => ['required', 'confirmed', 'min:12', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'],
@@ -46,8 +47,16 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+        Log::info('User registered', [
+            'user' => $user, 'time',
+            now()->format('Y-m-d H:i:s.u')
+        ]);
 
         Auth::login($user);
+        Log::info('User Logged in', [
+            'user' => $user, 'time',
+            now()->format('Y-m-d H:i:s.u')
+        ]);
 
         return redirect(RouteServiceProvider::HOME);
     }

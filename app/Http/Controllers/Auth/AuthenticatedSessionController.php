@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
-
+use Illuminate\Support\Facades\Log;
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -42,7 +42,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        Log::info('User Logged out', [
+            'user' => Auth::user(), 'time' =>
+            now()->format('Y-m-d H:i:s.u')
+        ]);
+
         Auth::guard('web')->logout();
+
 
         $request->session()->invalidate();
 
