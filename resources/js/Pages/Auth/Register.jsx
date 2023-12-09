@@ -79,7 +79,7 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
+                    <InputError message={errors.password == 'The password field format is invalid.' ? 'Password must be atleast 12 characters with atleast one capital, one number and one special character' : errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
