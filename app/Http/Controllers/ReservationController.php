@@ -18,6 +18,7 @@ use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationDeleted;
+use App\Mail\UserMakeReservation;
 use App\Models\Package;
 use App\Models\Location;
 use App\Models\Payment;
@@ -144,6 +145,24 @@ class ReservationController extends Controller
             ]);
         } else {
             // If the instructor is available in the selected datetimes
+            // send email to user
+            $user = User::find($userId);
+            $userName = $user->name;
+            $userMail = 'hamzaomenxx@gmail.com';
+
+            $data = [
+                'selectedDatetimes' => $selectedDatetimes,
+                'price' => $selectedPackage->price,
+                'location' => Location::find($locationId)->name,
+                'package' => $selectedPackage->name,
+            ];
+
+            Mail::to($userMail)->send(new UserMakeReservation($userName, $data));
+
+
+
+
+
             return inertia('Welcome')->with([
                 'success' => 'Thank you for your reservation. please check your email for more details.',
                 'packages' => Package::all(),
@@ -310,7 +329,8 @@ class ReservationController extends Controller
         $reservation->save();
     }
 
-    public function userReservations() {
+    public function userReservations()
+    {
         $user = Auth::user();
         $allReservations = Reservation::where('user_id', $user->id)->get();
         $allReservations->load('package')->load('payment');
@@ -320,7 +340,8 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function userPaid(Request $request) {
+    public function userPaid(Request $request)
+    {
         $reservation = Reservation::find($request->reservationId);
         $reservation->load('package')->load('payment');
         $reservation->payment->user_payment_status = PaymentEnum::COMPLETED->value;
