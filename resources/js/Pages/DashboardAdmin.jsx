@@ -12,6 +12,20 @@ const localizer = momentLocalizer(moment);
 // Custom Event component with a cancel button
 const CustomEvent = ({ event }) => (
     <div className="flex gap-4 items-center">
+        <div>
+            <strong>{event.title}</strong>
+            {/* <p>Instructeur: {event}</p> */}
+            {/* <p>Customer: {event}</p> */}
+        </div>
+        <div>
+            <CancelLeassonForm eventId={event.id} />
+        </div>
+    </div>
+);
+
+// Custom Agenda component with a cancel button and name of the instructor
+const CustomAgenda = ({ event }) => (
+    <div className="flex gap-4 items-center">
         <strong>{event.title}</strong>
         <div>
             <CancelLeassonForm eventId={event.id} />
@@ -26,8 +40,9 @@ export default function DashboardAdmin({
     instructors,
 }) {
     const [myEventsList, setMyEventsList] = useState([]);
+
     const [instructeur, setInstructeur] = useState("all");
-    // console.log(paidReservations);
+    paidReservations = Object.values(paidReservations);
 
     useEffect(() => {
         paidReservations.map((reservation) => {
@@ -85,7 +100,7 @@ export default function DashboardAdmin({
                 }
             });
         }
-    }, [instructeur])
+    }, [instructeur]);
 
     const filterInstructeur = (e) => {
         setInstructeur(e.target.value);
@@ -130,9 +145,7 @@ export default function DashboardAdmin({
                                         </option>
                                     ))
                                 ) : (
-                                    <option value="all">
-                                        All instructors
-                                    </option>
+                                    <option value="all">All instructors</option>
                                 )}
                             </select>
                         </div>
@@ -151,6 +164,9 @@ export default function DashboardAdmin({
                             style={{ height: 500 }}
                             components={{
                                 event: CustomEvent,
+                                agenda: {
+                                    event: CustomAgenda,
+                                },
                             }}
                         />
                     </div>

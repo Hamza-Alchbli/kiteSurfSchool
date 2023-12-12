@@ -182,7 +182,7 @@ export default function Welcome({ auth, packages, locations, error, success, day
                         )}
                     </div>
 
-                    {!auth.user ? (
+                    {!auth.user || auth.user.email_verified_at == null || auth.user.suspended == 1 ? (
                         <div className="mt-6">
                             <div className="min-h-screen-50 bg-white w-full rounded-lg backdrop-brightness-50 flex flex-col justify-center items-center">
                                 <Link
@@ -193,7 +193,7 @@ export default function Welcome({ auth, packages, locations, error, success, day
                                         Not logged in
                                     </h1>
                                     <p className="text-gray-600 dark:text-gray-400 text-xl">
-                                        Please log in
+                                        Please log in and make sure you verified your email to make a reservation
                                     </p>
                                 </Link>
                             </div>
