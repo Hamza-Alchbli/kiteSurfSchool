@@ -69,11 +69,12 @@ class UserController extends Controller
     {
         $currentUser = Auth::user();
         $roleName = GetRoleNameByNumber::getRoleName($currentUser->role);
-        if ($roleName != UserRoleEnum::ADMIN->name) {
-            return Redirect::to('/dashboard');
-        }
+        // if ($roleName != UserRoleEnum::ADMIN->name) {
+        //     return Redirect::to('/dashboard');
+        // }
 
         $user = User::find($request->id);
+        // dd($request->all());
         $user->name = $request->name;
         $user->email = $request->email;
         $user->streat = $request->streat;
@@ -83,11 +84,9 @@ class UserController extends Controller
         $user->country = $request->country;
         $user->citizen_service_number = $request->citizen_service_number;
         $user->role = $request->role;
-
+        // dd($request->role);
         $user->save();
 
         return back();
     }
-
-
 }

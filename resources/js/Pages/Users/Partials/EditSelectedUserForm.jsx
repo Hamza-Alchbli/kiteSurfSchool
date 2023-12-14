@@ -8,6 +8,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { useForm, usePage } from "@inertiajs/react";
 import Select from "@/Components/Select";
+import { useEffect } from "react";
 
 export default function EditSelectedUserForm({ className = "", user }) {
     const [confirmingUserEdit, setconfirmingUserEdit] = useState(false);
@@ -30,6 +31,17 @@ export default function EditSelectedUserForm({ className = "", user }) {
         citizen_service_number: user.citizen_service_number,
         role: user.role,
     });
+    console.log(user.role);
+
+    useEffect(() => {
+        if (user.role == 'admin') {
+            setData('role', 5)
+        } else if (user.role == 'employee') {
+            setData('role', 3)
+        } else {
+            setData('role', 1)
+        }
+    }, [user.role]);
 
     const confirmUserSuspension = () => {
         setconfirmingUserEdit(true);
@@ -191,7 +203,10 @@ export default function EditSelectedUserForm({ className = "", user }) {
                                     ? 3
                                     : 5
                             }
-                            onChange={(e) => setData("role", e.target.value)}
+                            onChange={(e) => {
+                                console.log(data.role);
+                                setData("role", e.target.value);
+                            }}
                         >
                             <option value="1">Customer</option>
                             <option value="3">Employee</option>
